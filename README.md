@@ -1,12 +1,12 @@
 # Memory Timeline Backend
 
-## Instalación
+## Instalation
 
 ```bash
 npm install
 ```
 
-## Ejecutar la aplicación
+## Run The App
 
 ```bash
 npm run dev
