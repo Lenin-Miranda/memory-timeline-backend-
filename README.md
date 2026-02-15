@@ -1,6 +1,6 @@
 # Memory Timeline Backend
 
-## Instalación
+## Instalation
 
 ```bash
 npm install
