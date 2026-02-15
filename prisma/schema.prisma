@@ -1,11 +1,36 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
+
+}
+
+model Timeline{
+  id                String    @id @default(cuid())
+  personName        String
+  relationshipType  String
+  shareId           String    @unique
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  memories          Memory[]
+}
+
+
+model Memory{
+  id          String    @id @default(cuid())
+  timelineId  String
+  date        DateTime
+  text        String
+  imageUrl    String?
+  isFavorite  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
+
+  @@index([timelineId])
+  @@index([date])
 }
