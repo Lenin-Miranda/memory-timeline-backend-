@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node index.js",
     "start": "node index.js",
+    "build": "prisma generate",
     "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest",
     "test:setup": "NODE_ENV=test npx prisma migrate reset --force && NODE_ENV=test npx prisma migrate dev",
     "migrate": "prisma migrate deploy",
