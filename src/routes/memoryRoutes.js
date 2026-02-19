@@ -7,13 +7,12 @@ import {
   deleteMemory,
 } from "../controllers/memoryController.js";
 
-const router = Router();
+const memoryRouter = Router();
 
-// Memory routes
-router.post("/timelines/:timelineId/memories", createMemory);
-router.get("/timelines/:timelineId/memories", getMemoriesByTimeline);
-router.get("/memories/:id", getMemoryById);
-router.patch("/memories/:id", updateMemory);
-router.delete("/memories/:id", deleteMemory);
+memoryRouter.post("/timelines/:timelineId/memories", createMemory);
+memoryRouter.get("/timelines/:timelineId/memories", getMemoriesByTimeline);
+memoryRouter.get("/memories/:id", getMemoryById);
+memoryRouter.patch("/memories/:id", updateMemory);
+memoryRouter.delete("/memories/:id", deleteMemory);
 
-export default router;
+export default memoryRouter;

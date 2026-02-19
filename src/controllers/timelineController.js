@@ -29,6 +29,7 @@ export async function getTimelines(req, res) {
   try {
     const timelines = await prisma.timeline.findMany({
       where: { userId: req.userId },
+      include: { memories: true },
     });
     res.status(200).json(timelines);
   } catch (e) {

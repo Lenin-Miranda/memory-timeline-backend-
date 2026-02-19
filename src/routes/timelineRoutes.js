@@ -10,10 +10,9 @@ import { verifyToken } from "../middleware/authMiddleware.js";
 
 const timelineRouter = express.Router();
 
-router.get("/", verifyToken, getTimelines);
-router.get("/:id", verifyToken, getTimelineById);
-router.post("/", verifyToken, createTimeline);
-router.patch("/:id", verifyToken, updateTimeline);
-router.delete("/:id", verifyToken, deleteTimeline);
-
+timelineRouter.get("/", verifyToken, getTimelines);
+timelineRouter.get("/:id", verifyToken, getTimelineById);
+timelineRouter.post("/", verifyToken, createTimeline);
+timelineRouter.patch("/:id", verifyToken, updateTimeline);
+timelineRouter.delete("/:id", verifyToken, deleteTimeline);
 export default timelineRouter;
