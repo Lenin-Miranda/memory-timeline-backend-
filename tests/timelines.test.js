@@ -1,6 +1,6 @@
 import request from "supertest";
-import app from "../../index.js";
-import prisma from "../../src/utils/prisma.js";
+import app from "../index.js";
+import prisma from "../src/utils/prisma.js";
 
 describe("Timeline API", () => {
   beforeAll(async () => {

@@ -7,12 +7,12 @@ import {
 } from "../controllers/timelineController.js";
 import express from "express";
 
-const router = express.Router();
+const timelineRouter = express.Router();
 
-router.get("/", getTimelines);
-router.get("/:id", getTimelineById);
-router.post("/", createTimeline);
-router.patch("/:id", updateTimeline);
-router.delete("/:id", deleteTimeline);
+timelineRouter.get("/", getTimelines);
+timelineRouter.get("/:id", getTimelineById);
+timelineRouter.post("/", createTimeline);
+timelineRouter.patch("/:id", updateTimeline);
+timelineRouter.delete("/:id", deleteTimeline);
 
-export default router;
+export default timelineRouter;
