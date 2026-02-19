@@ -14,6 +14,7 @@ export async function createTimeline(req, res) {
       data: {
         personName,
         relationshipType,
+        userId: req.userId,
       },
     });
 
@@ -26,7 +27,9 @@ export async function createTimeline(req, res) {
 
 export async function getTimelines(req, res) {
   try {
-    const timelines = await prisma.timeline.findMany();
+    const timelines = await prisma.timeline.findMany({
+      where: { userId: req.userId },
+    });
     res.status(200).json(timelines);
   } catch (e) {
     console.error(`Error fetching timelines: ${e.message}`);
@@ -38,7 +41,7 @@ export async function getTimelineById(req, res) {
   try {
     const { id } = req.params;
     const timeline = await prisma.timeline.findUnique({
-      where: { id },
+      where: { id, userId: req.userId },
     });
     if (!timeline) {
       return res.status(404).json({ message: "Timeline not found" });
@@ -71,7 +74,7 @@ export async function updateTimeline(req, res) {
 
   try {
     const updatedTimeline = await prisma.timeline.update({
-      where: { id },
+      where: { id, userId: req.userId },
       data,
     });
 
@@ -92,7 +95,7 @@ export async function deleteTimeline(req, res) {
 
   try {
     const deleteTimeline = await prisma.timeline.delete({
-      where: { id },
+      where: { id, userId: req.userId },
     });
 
     if (!deleteTimeline) {

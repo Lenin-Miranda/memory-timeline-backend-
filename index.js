@@ -12,12 +12,13 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/timelines", router);
 app.use("/api/auth", authRoutes);
+app.post("/api/auth/test", (req, res) => res.json({ test: "works" }));
 
 app.get("/health", (req, res) => {
   res.json({ ok: true });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`API running on http://localhost:${PORT}`);
 });

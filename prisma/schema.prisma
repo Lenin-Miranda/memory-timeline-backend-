@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = "postgresql://user:password@localhost:5432/memory_timeline?schema=public"
+
 
 }
 
