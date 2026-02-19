@@ -14,9 +14,8 @@ model Timeline {
   userId           String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-
-  memories Memory[]
-  user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  memories         Memory[]
+  user             User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }

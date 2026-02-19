@@ -2,6 +2,10 @@
 
 A REST API for managing personal timelines and memories. Built with Node.js, Express, PostgreSQL, and Prisma.
 
+## Live Demo
+
+**API Base URL**: https://memory-timeline-backend.onrender.com
+
 ## Features
 
 - Timeline management (CRUD operations)
@@ -207,4 +211,33 @@ Deploy migrations:
 
 ```bash
 npm run migrate
+```
+
+## Deployment
+
+The API is deployed on Render at: **https://memory-timeline-backend.onrender.com**
+
+### Environment Variables Required:
+
+- `DATABASE_URL`: PostgreSQL connection string
+- `JWT_SECRET`: Secret key for JWT token generation
+- `PORT`: Server port (defaults to 3000)
+
+### Health Check:
+
+- **GET** `/health` - Check if API is running
+
+### Example API Usage:
+
+```bash
+# Health check
+curl https://memory-timeline-backend.onrender.com/health
+
+# Get all timelines
+curl https://memory-timeline-backend.onrender.com/api/timelines
+
+# Create a new timeline
+curl -X POST https://memory-timeline-backend.onrender.com/api/timelines \
+  -H "Content-Type: application/json" \
+  -d '{"personName": "John Doe", "relationshipType": "friend"}'
 ```

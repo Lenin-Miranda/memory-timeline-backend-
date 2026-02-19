@@ -10,7 +10,7 @@ export async function createTimeline(req, res) {
         .json({ message: "personName and relationshipType are required" });
     }
 
-    await prisma.timeline.create({
+    const timeline = await prisma.timeline.create({
       data: {
         personName,
         relationshipType,
@@ -18,7 +18,10 @@ export async function createTimeline(req, res) {
       },
     });
 
-    res.status(201).json({ message: "Timeline created successfully" });
+    res.status(201).json({
+      message: "Timeline created successfully",
+      timeline,
+    });
   } catch (e) {
     console.error(`Error creating timeline: ${e.message}`);
     res.status(500).json({ message: "Error creating timeline" });
