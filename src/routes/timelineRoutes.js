@@ -8,7 +8,7 @@ import {
 import express from "express";
 import { verifyToken } from "../middleware/authMiddleware.js";
 
-const router = express.Router();
+const timelineRouter = express.Router();
 
 router.get("/", verifyToken, getTimelines);
 router.get("/:id", verifyToken, getTimelineById);
@@ -16,4 +16,4 @@ router.post("/", verifyToken, createTimeline);
 router.patch("/:id", verifyToken, updateTimeline);
 router.delete("/:id", verifyToken, deleteTimeline);
 
-export default router;
+export default timelineRouter;

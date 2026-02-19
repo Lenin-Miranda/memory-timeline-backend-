@@ -5,9 +5,6 @@
   },
   "transform": {},
   "testMatch": ["<rootDir>/tests/**/*.test.js"],
-  "moduleNameMapper": {
-    "^(\\.{1,2}/.*)\\.js$": "$1"
-  },
   "collectCoverageFrom": ["src/**/*.js", "!src/**/*.test.js"],
   "forceExit": true,
   "detectOpenHandles": true
