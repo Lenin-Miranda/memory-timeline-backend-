@@ -4,17 +4,23 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+
+
 }
 
 model Timeline {
   id               String   @id @default(cuid())
   personName       String
   relationshipType String
-  shareId          String   @unique
+  shareId          String   @unique @default(cuid())
+  userId           String 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
   memories Memory[]
+  user             User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
 }
 
 model Memory {
@@ -31,4 +37,14 @@ model Memory {
 
   @@index([timelineId])
   @@index([date])
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String    
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  timelines Timeline[]
 }
