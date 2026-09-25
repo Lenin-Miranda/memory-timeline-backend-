@@ -1,243 +1,59 @@
-# Memory Timeline Backend
+# Memory Timeline API
 
-A REST API for managing personal timelines and memories. Built with Node.js, Express, PostgreSQL, and Prisma.
+Express API for personal timelines, dated memories and account authentication. Uses PostgreSQL, Prisma 7 and JWT.
 
-## Live Demo
+**Frontend:** [memory-timeline-frontend](https://github.com/Lenin-Miranda/memory-timeline-frontend).
 
-**API Base URL**: https://memory-timeline-backend.onrender.com
+## Setup
 
-## Features
-
-- Timeline management (CRUD operations)
-- Memory management with timeline associations
-- Database-driven with PostgreSQL
-- Comprehensive test suite with Jest
-- Database isolation for testing
-- ES modules configuration
-
-## Tech Stack
-
-- **Runtime**: Node.js v20.19.6 with ES modules
-- **Framework**: Express.js
-- **Database**: PostgreSQL with Prisma ORM
-- **Testing**: Jest with Supertest
-- **Database Provider**: Neon (cloud PostgreSQL)
-
-## Database Models
-
-### Timeline
-
-- `id`: Unique identifier (cuid)
-- `personName`: Name of the person
-- `relationshipType`: Type of relationship (friend, family, etc.)
-- `shareId`: Unique sharing identifier
-- `createdAt`: Creation timestamp
-- `updatedAt`: Last update timestamp
-- `memories`: Array of associated memories
-
-### Memory
-
-- `id`: Unique identifier (cuid)
-- `timelineId`: Associated timeline ID
-- `date`: Memory date
-- `text`: Memory description
-- `imageUrl`: Optional image URL
-- `isFavorite`: Favorite status (boolean)
-- `createdAt`: Creation timestamp
-- `updatedAt`: Last update timestamp
-
-## Installation
+Use Node.js 22.12+ with npm and an available PostgreSQL database.
 
 ```bash
+git clone https://github.com/Lenin-Miranda/memory-timeline-backend-.git
+cd memory-timeline-backend-
 npm install
 ```
 
-## Environment Setup
+Create `.env`:
 
-Create `.env` file:
-
+```dotenv
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/memory_timeline?schema=public
+PORT=3001
+JWT_SECRET=replace-with-a-generated-secret
 ```
-DATABASE_URL="your_postgresql_connection_string"
-PORT=3000
-```
-
-Create `.env.test` file for testing:
-
-```
-DATABASE_URL="your_test_postgresql_connection_string"
-```
-
-## Database Setup
-
-1. Generate Prisma client:
 
 ```bash
-npx prisma generate
-```
-
-2. Run migrations:
-
-```bash
-npx prisma migrate dev
-```
-
-3. For test database setup:
-
-```bash
-npm run test:setup
-```
-
-## Running the Application
-
-Development mode:
-
-```bash
+npm run build
+npm run migrate
 npm run dev
 ```
 
-Production mode:
+Here `build` generates the Prisma client; it does not compile a frontend. `migrate` applies committed migrations. Check [localhost:3001/health](http://localhost:3001/health).
 
-```bash
-npm start
-```
+## API
 
-## API Endpoints
+| Group | Routes |
+| --- | --- |
+| Auth | `POST /api/auth/signup`, `POST /api/auth/login`, `GET /api/auth/me` |
+| Timelines | `GET/POST /api/timelines`; `GET/PATCH/DELETE /api/timelines/:id` |
+| Timeline memories | `GET/POST /api/timelines/:timelineId/memories` |
+| Individual memories | `GET/PATCH/DELETE /api/memories/:id` |
 
-### Timelines
+Timeline routes and the current-user route apply JWT middleware. The memory router currently has no token middleware, so do not assume all memory endpoints have the same access controls.
 
-- `GET /api/timelines` - Get all timelines
-- `GET /api/timelines/:id` - Get timeline by ID
-- `POST /api/timelines` - Create new timeline
-- `PATCH /api/timelines/:id` - Update timeline
-- `DELETE /api/timelines/:id` - Delete timeline
+## Scripts
 
-### Memories
+- `npm run dev` / `npm start`: run `index.js`.
+- `npm run build`: generate Prisma client.
+- `npm run migrate`: apply committed migrations.
+- `npm run studio`: open Prisma Studio.
+- `npm test`: Jest/Supertest.
+- `npm run test:setup`: reset and migrate the test database.
 
-- `GET /api/timelines/:timelineId/memories` - Get memories for a timeline
-- `GET /api/memories/:id` - Get memory by ID
-- `POST /api/timelines/:timelineId/memories` - Create new memory
-- `PATCH /api/memories/:id` - Update memory
-- `DELETE /api/memories/:id` - Delete memory
+## Test database
 
-### Health Check
+Create `.env.test` with a separate `DATABASE_URL` and the configuration needed by the tests. Inspect [prisma.config.ts](prisma.config.ts) and the test files before running setup: `test:setup` uses `prisma migrate reset --force` and deletes data in the selected database. Never point it at a development database you need to keep or at production.
 
-- `GET /health` - API health status
+## Structure
 
-## Request/Response Examples
-
-### Create Timeline
-
-```bash
-POST /api/timelines
-Content-Type: application/json
-
-{
-  "personName": "John Doe",
-  "relationshipType": "friend"
-}
-```
-
-### Create Memory
-
-```bash
-POST /api/timelines/:timelineId/memories
-Content-Type: application/json
-
-{
-  "date": "2026-02-19T10:00:00Z",
-  "text": "Had a great conversation about programming",
-  "imageUrl": "https://example.com/photo.jpg",
-  "isFavorite": true
-}
-```
-
-## Testing
-
-Run all tests:
-
-```bash
-npm test
-```
-
-The test suite includes:
-
-- 9 Timeline API tests
-- 8 Memory API tests
-- Complete CRUD operation coverage
-- Error handling validation
-- Database isolation between tests
-
-## Project Structure
-
-```
-memory-timeline-backend/
-├── src/
-│   ├── controllers/
-│   │   ├── timelineController.js
-│   │   └── memoryController.js
-│   ├── routes/
-│   │   ├── timelineRoutes.js
-│   │   └── memoryRoutes.js
-│   └── utils/
-│       └── prisma.js
-├── tests/
-│   ├── timelines.test.js
-│   └── memory.test.js
-├── prisma/
-│   └── schema.prisma
-├── index.js
-├── package.json
-└── jest.config.json
-```
-
-## Development Notes
-
-- Uses ES modules (`"type": "module"` in package.json)
-- Jest configured for ES modules with experimental VM modules
-- Separate test database for isolated testing
-- Database cascading deletes for data integrity
-- Comprehensive error handling and validation
-- CORS enabled for frontend integration
-
-## Database Management
-
-Open Prisma Studio:
-
-```bash
-npm run studio
-```
-
-Deploy migrations:
-
-```bash
-npm run migrate
-```
-
-## Deployment
-
-The API is deployed on Render at: **https://memory-timeline-backend.onrender.com**
-
-### Environment Variables Required:
-
-- `DATABASE_URL`: PostgreSQL connection string
-- `JWT_SECRET`: Secret key for JWT token generation
-- `PORT`: Server port (defaults to 3000)
-
-### Health Check:
-
-- **GET** `/health` - Check if API is running
-
-### Example API Usage:
-
-```bash
-# Health check
-curl https://memory-timeline-backend.onrender.com/health
-
-# Get all timelines
-curl https://memory-timeline-backend.onrender.com/api/timelines
-
-# Create a new timeline
-curl -X POST https://memory-timeline-backend.onrender.com/api/timelines \
-  -H "Content-Type: application/json" \
-  -d '{"personName": "John Doe", "relationshipType": "friend"}'
-```
+`src/controllers/` implements behavior, `src/routes/` defines endpoints, `src/middleware/` contains authentication, and `prisma/` owns schema/migrations. The frontend expects the server origin in `VITE_API_URL`, without an added `/api`.
